@@ -25,8 +25,8 @@ sudo apt install -y gnupg wget
 wget https://dev.mysql.com/get/mysql-apt-config_0.8.30-1_all.deb
 
 # Configuramos mysql-apt-config automáticamente
-sudo DEBIAN_FRONTEND=noninteractive dpkg-reconfigure mysql-apt-config <<< "1" &>/dev/null
-sudo dpkg -i mysql-apt-config_0.8.30-1_all.deb
+echo -e "${GREEN}Configurando mysql-apt-config automáticamente...${NC}"
+sudo DEBIAN_FRONTEND=noninteractive dpkg -i mysql-apt-config_0.8.30-1_all.deb <<< "mysql-8.0"
 
 sudo apt update
 sudo DEBIAN_FRONTEND=noninteractive apt install -y mysql-server
