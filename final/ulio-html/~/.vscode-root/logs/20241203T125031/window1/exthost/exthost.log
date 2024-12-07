@@ -1,3 +1,0 @@
-2024-12-03 12:51:29.509 [info] Extension host with pid 10152 started
-2024-12-03 12:51:30.032 [info] ExtensionService#_doActivateExtension vscode.emmet, startup: false, activationEvent: 'onLanguage'
-2024-12-03 12:51:30.106 [info] ExtensionService#_doActivateExtension vscode.php-language-features, startup: false, activationEvent: 'onLanguage:php'

@@ -1,8 +1,0 @@
-2024-12-02 10:28:50.758 [info] [main] Log level: Info
-2024-12-02 10:28:50.758 [info] [main] Validating found git in: "git"
-2024-12-02 10:28:50.758 [warning] Unable to find git. Error: spawn git ENOENT
-2024-12-02 10:28:50.758 [warning] [main] Failed to create model: Error: Git installation not found.
-2024-12-02 10:34:42.658 [info] [main] Log level: Info
-2024-12-02 10:34:42.659 [info] [main] Validating found git in: "git"
-2024-12-02 10:34:42.659 [warning] Unable to find git. Error: spawn git ENOENT
-2024-12-02 10:34:42.659 [warning] [main] Failed to create model: Error: Git installation not found.
