@@ -14,6 +14,10 @@ ZIP_FILE="/home/user1/final.zip"
 SERVICE_NAME="script.service"
 SCRIPT_FILE="script.sh"
 
+ADMIN_NAME="admin"
+ADMIN_EMAIL="admin@example.com"
+ADMIN_PASSWORD="admin_password"
+
 # Actualizamos el sistema
 echo -e "${GREEN}Actualizando paquetes del sistema...${NC}"
 sudo apt update && sudo apt upgrade -y
@@ -147,6 +151,27 @@ CREATE TABLE IF NOT EXISTS Cuy (
 _EOF_
 
 echo -e "${GREEN}Tablas creadas correctamente.${NC}"
+
+
+# Insertar el usuario administrador
+echo -e "${GREEN}Insertando usuario administrador...${NC}"
+
+# Insertamos el usuario administrador con el hash de la contraseña
+USER_ID=$(sudo mysql --user=root --password=${ROOT_MYSQL_PASSWORD} ${DB_NAME} -se "INSERT INTO final_usuarios (nombre, gmail, contrasena) VALUES ('${ADMIN_NAME}', '${ADMIN_EMAIL}', '${ADMIN_PASSWORD}'); SELECT LAST_INSERT_ID();")
+
+# Verificamos si la inserción fue exitosa
+if [ -z "$USER_ID" ]; then
+    echo -e "${RED}Error al insertar el usuario administrador.${NC}"
+    exit 1
+fi
+
+# Insertamos en la tabla final_administradores usando el id obtenido
+sudo mysql --user=root --password=${ROOT_MYSQL_PASSWORD} ${DB_NAME} <<_EOF_
+INSERT INTO final_administradores (usuario_id)
+VALUES ('${USER_ID}');
+_EOF_
+
+echo -e "${GREEN}Usuario administrador insertado correctamente en final_usuarios y final_administradores.${NC}"
 
 # Instalamos PHP y extensiones requeridas
 echo -e "${GREEN}Instalando PHP y extensiones necesarias...${NC}"
