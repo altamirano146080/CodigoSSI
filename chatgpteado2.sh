@@ -43,14 +43,10 @@ echo -e "${GREEN}MySQL Server instalado y funcionando.${NC}"
 # Configuración básica de MySQL
 echo -e "${GREEN}Configurando MySQL...${NC}"
 
-# Cargar el plugin mysql_native_password si no está cargado
+# Cambiar la contraseña de root y usar el plugin por defecto
 sudo mysql --user=root <<_EOF_
--- Verificar si el plugin mysql_native_password está cargado
-SHOW PLUGINS LIKE 'mysql_native_password';
--- Si no está cargado, lo instalamos
-INSTALL PLUGIN mysql_native_password SONAME 'mysql_native_password.so';
--- Ahora configuramos la contraseña para root
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '${ROOT_MYSQL_PASSWORD}';
+-- Cambiar la contraseña y usar el plugin adecuado
+ALTER USER 'root'@'localhost' IDENTIFIED WITH caching_sha2_password BY '${ROOT_MYSQL_PASSWORD}';
 FLUSH PRIVILEGES;
 _EOF_
 
