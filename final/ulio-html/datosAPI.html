@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner" class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="menu.html" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BACK OFFICE</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="img/logo.png" alt="" style="width: 40px; height: 40px;">
+                        <div class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1"></div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 id="user_name" class="mb-0">Nombre admin</h6>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="menu.html" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Listado Usuarios</a>
+                    <!--
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Datos de la API</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="button.html" class="dropdown-item">Borrar información</a>
+                            <a href="typography.html" class="dropdown-item">Rellenar información</a>
+                        </div>
+                    </div>
+                    -->
+                    <a href="datosAPI.html" class="nav-item nav-link active"><i class="fa fa-chart-bar me-2"></i>Datos de la API</a>
+                    <a href="perfilAdmin.html" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Mi perfil</a>
+                </div>
+            </nav>
+            
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="menu.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+                <a class="btn btn-sm btn-primary" href=""onclick="vaciarTodasLasTablas()">Vaciar Todas las Tablas</a>
+                <a class="btn btn-sm btn-primary" href=""onclick="poblarTodasLasTablas()">Poblar Todas las Tablas</a>
+
+                <div class="navbar-nav align-items-center ms-auto">
+                    
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/logo.png" alt=""
+                                style="width: 40px; height: 40px;">
+                                <span id="name_user" class="d-none d-lg-inline-flex">Nombre admin</span>
+                            </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+                            
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="changePasswordModalLabel"></h5>
+                                <a href="perfilAdmin.html" class="dropdown-item">Cambiar mi contraseña
+                                
+                                  <span aria-hidden="true">&times;</span>
+                                </a>
+                              </div>
+                            <div class="modal-body">
+                                <!-- Formulario para cambiar la contraseña -->
+                                <!-- Formulario para cambiar la contraseña -->
+                                <form id="changePasswordForm" action="../loginConMod/cambiarcontraseña.php" method="post">
+                                  <div class="form-group">
+                                    <label for="currentPassword">Contraseña actual</label>
+                                    <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="newPassword">Nueva Contraseña</label>
+                                    <input type="password" class="form-control" id="newPassword" name="newPassword" required>
+                                  </div>
+                                  <div class="form-group">
+                                    <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                                    <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" required>
+                                  </div>
+                                  <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </form>
+                              </div>
+                            <a href="../loginConMod/logout.php" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+            <!-- Table1 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_apod_images 
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="vaciarTabla('final_apod_images')" >Vaciar Tabla</a></td>
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="poblarTablaApod()">Poblar Tabla</a></td>
+                            <span id="rowCount1" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">id</th>
+                                        <th scope="col">date</th>
+                                        <th scope="col">title</th>
+                                        <th scope="col">explanation</th>
+                                        <th scope="col">url</th>
+                                        <th scope="col">hd_url</th>
+                                        <th scope="col">media_type</th>
+                                    </tr>
+                                </thead> -->
+                                <thead id="dynamicTableHead1">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody1">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+            <!-- Table2 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_categories
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="vaciarTabla('final_categories')">Vaciar Tabla</a></td>
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="poblarTablaCategories()">Poblar Tabla</a></td>
+                            <span id="rowCount2" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">id_caegories</th>
+                                        <th scope="col">title</th>
+                                        <th scope="col">link</th>
+                                        <th scope="col">description</th>
+                                        <th scope="col">layers</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead2">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody2">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+            <!-- Table5 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_events
+                            <td><a class="btn btn-sm btn-primary" href="" onclick="vaciarTabla('final_events')">Vaciar Tabla</a></td>
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="poblarTablaEventos()">Poblar Tabla</a></td>
+                            <span id="rowCount3" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">id_evento</th>
+                                        <th scope="col">title</th>
+                                        <th scope="col">description</th>
+                                        <th scope="col">link</th>
+                                        <th scope="col">categories</th>
+                                        <th scope="col">closed</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead3">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody3">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+            <!-- Table5 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_Foto
+                            <td><a class="btn btn-sm btn-primary" href="" onclick="vaciarTabla('final_Foto')">Vaciar Tabla</a></td>
+                            <td><a class="btn btn-sm btn-primary" href="" onclick="poblarTablaRover()">Poblar Tabla</a></td>
+                            <span id="rowCount4" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">photo_id</th>
+                                        <th scope="col">rover_id</th>
+                                        <th scope="col">photo_date</th>
+                                        <th scope="col">photo_url</th>
+                                        <th scope="col">sol</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead4">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody4">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+            <!-- Table5 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_geometries
+                            <span id="rowCount5" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">event_id</th>
+                                        <th scope="col">geometry</th>
+                                        <th scope="col">id_geometry</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead5">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody5">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+
+            <!-- Table6 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_Rover
+                            <span id="rowCount6" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">name</th>
+                                        <th scope="col">status</th>
+                                        <th scope="col">launch_date</th>
+                                        <th scope="col">landing_date</th>
+                                        <th scope="col">max_sol</th>
+                                        <th scope="col">max_date</th>
+                                        <th scope="col">total_photos</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead6">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody6">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+            <!-- Table7 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_source
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="vaciarTabla('final_source')">Vaciar Tabla</a></td>
+                            <td><a class="btn btn-sm btn-primary" href=""onclick="poblarTablaSource()">Poblar Tabla</a></td>
+                            <span id="rowCount7" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">ide_source</th>
+                                        <th scope="col">title</th>
+                                        <th scope="col">source</th>
+                                        <th scope="col">link</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead7">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody7">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+
+            <!-- Table8 Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="row g-4">
+                    <div class="bg-light rounded h-100 p-4">
+                        <h6 class="mb-4">final_source_links
+                            <span id="rowCount8" class="badge bg-primary"></span>
+                        </h6>
+                        <div class="table-responsive">
+                            <table class="table">
+                                <!-- <thead>
+                                    <tr>
+                                        <th scope="col">link</th>
+                                        <th scope="col">id_source</th>
+                                        <th scope="col">id_event</th>
+                                        <th scope="col">id</th>
+                                    </tr>
+                                </thead>-->
+                                <thead id="dynamicTableHead8">
+                                    <!-- Nombres de columnas serán agregados aquí -->
+                                </thead>
+                                <tbody id="dynamicTableBody8">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Table End -->
+           
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved. 
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                        </br>
+                        Distributed By <a class="border-bottom" href="https://themewagon.com" target="_blank">ThemeWagon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+
+
+        <!-- Back to Top -->
+        <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $.ajax({
+                url: '../ulio-html/obtener_usuario.php', // Ruta del archivo PHP que devuelve los datos del usuario
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    // Actualizar la información del usuario en el frontend
+                    $('#user_avatar').attr('src', data.avatar); // Actualizar la imagen de perfil
+                    $('#user_name').text(data.nombre); // Actualizar el nombre del usuario
+                    $('#name_user').text(data.nombre); // Actualizar el nombre del usuario
+
+                },
+                error: function() {
+                    // Manejar errores de la solicitud AJAX
+                    alert('Error al obtener los datos del usuario.');
+                }
+            });
+          // Llamar a la función para obtener categorías al cargar la página
+          //cargarApodImages();
+          //cargarCategories();
+          //cargarEvents();
+          //cargarFoto();
+          //cargarGeometries();
+          //cargarRover();
+          //cargarSource();
+          //cargarSourceLinks();
+          cargarNombresColumnas();
+        });
+
+        function cargarNombresColumnas() {
+            cargarColumnas('final_apod_images', '#dynamicTableHead1', '#dynamicTableBody1', '#rowCount1');
+            cargarColumnas('final_categories', '#dynamicTableHead2', '#dynamicTableBody2', '#rowCount2');
+            cargarColumnas('final_events', '#dynamicTableHead3', '#dynamicTableBody3', '#rowCount3');
+            cargarColumnas('final_Foto', '#dynamicTableHead4', '#dynamicTableBody4', '#rowCount4');
+            cargarColumnas('final_geometries', '#dynamicTableHead5', '#dynamicTableBody5', '#rowCount5');
+            cargarColumnas('final_Rover', '#dynamicTableHead6', '#dynamicTableBody6', '#rowCount6');
+            cargarColumnas('final_source', '#dynamicTableHead7', '#dynamicTableBody7', '#rowCount7');
+            cargarColumnas('final_source_links', '#dynamicTableHead8', '#dynamicTableBody8', '#rowCount8');
+        }
+
+        function cargarColumnas(tabla, tableHeadId, tableBodyId, rowCountId) {
+            $.ajax({
+                url: 'obtenerColumnas.php',
+                type: 'POST',
+                data: { table: tabla },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    var columns = data.columns;
+                    var rowCount = data.rowCount;
+                    var tableHead = $(tableHeadId);
+                    var tableBody = $(tableBodyId);
+                    var rowCountElement = $(rowCountId);
+                    
+                    tableHead.empty();
+                    tableBody.empty();
+                    
+                    // Añadir nombres de las columnas al thead
+                    var headRow = $('<tr>');
+                    columns.forEach(function(column) {
+                        headRow.append('<th scope="col">' + column.Field + '</th>');
+                    });
+                    tableHead.append(headRow);
+                    
+                    // Añadir tipos de datos al tbody
+                    var bodyRow = $('<tr>');
+                    columns.forEach(function(column) {
+                        bodyRow.append('<td>' + column.Type + '</td>');
+                    });
+                    tableBody.append(bodyRow);
+
+                    // Mostrar el número de filas
+                    rowCountElement.text('Número de filas: ' + rowCount);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function poblarTodasLasTablas() {
+            // Llama a todas las funciones de poblado de tablas aquí
+            poblarTablaRover();
+            poblarTablaApod();
+            poblarTablaCategories();
+            poblarTablaEventos();
+            poblarTablaSource();
+        }
+
+        function vaciarTodasLasTablas() {
+            // Llama a la función vaciarTabla para cada tabla
+            vaciarTabla('final_apod_images');
+            vaciarTabla('final_categories');
+            vaciarTabla('final_events');
+            vaciarTabla('final_Foto');
+            vaciarTabla('final_source');
+        }
+
+        function vaciarTabla(tabla) {
+            if (confirm("¿Estás seguro de que deseas vaciar la tabla " + tabla + "?")) {
+                $.ajax({
+                    url: 'eliminarTabla.php',
+                    type: 'POST',
+                    data: {table: tabla},
+                    success: function(response) {
+                        alert(response);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            }
+        }
+
+        function poblarTablaRover() {
+            $.ajax({
+                url: 'poblarTablaRover.php',
+                type: 'POST',
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        
+        function poblarTablaApod() {
+            $.ajax({
+                url: 'poblarTablaApod.php',
+                type: 'POST',
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function poblarTablaCategories() {
+            $.ajax({
+                url: 'poblarTablaCategories.php',
+                type: 'POST',
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function poblarTablaEventos() {
+            $.ajax({
+                url: 'poblarTablaEventos.php',
+                type: 'POST',
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function poblarTablaSource() {
+            $.ajax({
+                url: 'poblarTablaSource.php',
+                type: 'POST',
+                success: function(response) {
+                    alert(response);
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function cargarApodImages() {
+    
+            // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+            $.ajax({
+              url: 'cargarApodImagesTables.php', // Ruta al script PHP con el parámetro rover_id
+              type: 'GET', // Método de solicitud
+              dataType: 'json', // Tipo de datos esperados
+              success: function(data) { // Función a ejecutar si la solicitud es exitosa
+                console.log(data);
+                // Limpiar el contenido de la tabla
+                $('#dynamicTableBody1').empty();
+                // Iterar sobre los datos recibidos y actualizar la tabla
+                $.each(data, function(index, item) {
+                  // Agregar fila a la tabla
+                  $('#dynamicTableBody1').append(
+                  '<tr>' +
+                    '<td>' + item.id + '</td>' +
+                    '<td>' + item.date + '</td>' +
+                    '<td>' + item.title +'</td>' +
+                    '<td>' + item.explanation +'</td>' +
+                    '<td>' + item.url +'</td>' +
+                    '<td>' + item.hd_url +'</td>' +
+                    '<td>' + item.media_type + '</td>' +
+                  '</tr>'
+                  );
+                });
+              },
+              error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+                console.error(xhr.responseText);
+              }
+            });
+        }
+        
+
+
+    
+        function cargarCategories() {
+    
+            // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+            $.ajax({
+            url: 'cargarCategoriesTables.php', // Ruta al script PHP con el parámetro rover_id
+            type: 'GET', // Método de solicitud
+            dataType: 'json', // Tipo de datos esperados
+            success: function(data) { // Función a ejecutar si la solicitud es exitosa
+                console.log(data);
+                // Limpiar el contenido de la tabla
+                $('#dynamicTableBody2').empty();
+                // Iterar sobre los datos recibidos y actualizar la tabla
+                $.each(data, function(index, item) {
+                // Agregar fila a la tabla
+                $('#dynamicTableBody2').append(
+                '<tr>' +
+                    '<td>' + item.id_categories + '</td>' +
+                    '<td>' + item.title + '</td>' +
+                    '<td>' + item.link +'</td>' +
+                    '<td>' + item.description +'</td>' +
+                    '<td>' + item.layers +'</td>' +
+                '</tr>'
+                );
+                });
+            },
+            error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+                console.error(xhr.responseText);
+            }
+            });
+        }
+
+        function cargarEvents() {
+    
+            // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+            $.ajax({
+            url: 'cargarEventsTables.php', // Ruta al script PHP con el parámetro rover_id
+            type: 'GET', // Método de solicitud
+            dataType: 'json', // Tipo de datos esperados
+            success: function(data) { // Función a ejecutar si la solicitud es exitosa
+                console.log(data);
+                // Limpiar el contenido de la tabla
+                $('#dynamicTableBody3').empty();
+                // Iterar sobre los datos recibidos y actualizar la tabla
+                $.each(data, function(index, item) {
+                // Agregar fila a la tabla
+                $('#dynamicTableBody3').append(
+                '<tr>' +
+                    '<td>' + item.id_evento + '</td>' +
+                    '<td>' + item.title + '</td>' +
+                    '<td>' + item.description +'</td>' +
+                    '<td>' + item.link +'</td>' +
+                    '<td>' + item.categories +'</td>' +
+                    '<td>' + item.closed +'</td>' +
+                '</tr>'
+                );
+                });
+            },
+            error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+                console.error(xhr.responseText);
+            }
+            });
+        }
+
+        function cargarFoto() {
+        
+            // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+            $.ajax({
+            url: 'cargarFotoTables.php', // Ruta al script PHP con el parámetro rover_id
+            type: 'GET', // Método de solicitud
+            dataType: 'json', // Tipo de datos esperados
+            success: function(data) { // Función a ejecutar si la solicitud es exitosa
+                console.log(data);
+                // Limpiar el contenido de la tabla
+                $('#dynamicTableBody4').empty();
+                // Iterar sobre los datos recibidos y actualizar la tabla
+                $.each(data, function(index, item) {
+                // Agregar fila a la tabla
+                $('#dynamicTableBody4').append(
+                '<tr>' +
+                    '<td>' + item.photo_id + '</td>' +
+                    '<td>' + item.rover_id + '</td>' +
+                    '<td>' + item.photo_date +'</td>' +
+                    '<td>' + item.photo_url +'</td>' +
+                    '<td>' + item.sol +'</td>' +
+                '</tr>'
+                );
+                });
+            },
+            error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+                console.error(xhr.responseText);
+            }
+            });
+        }
+
+        
+        function cargarGeometries() {
+        
+        // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+        $.ajax({
+        url: 'cargarGeometriesTables.php', // Ruta al script PHP con el parámetro rover_id
+        type: 'GET', // Método de solicitud
+        dataType: 'json', // Tipo de datos esperados
+        success: function(data) { // Función a ejecutar si la solicitud es exitosa
+            console.log(data);
+            // Limpiar el contenido de la tabla
+            $('#dynamicTableBody5').empty();
+            // Iterar sobre los datos recibidos y actualizar la tabla
+            $.each(data, function(index, item) {
+            // Agregar fila a la tabla
+            $('#dynamicTableBody5').append(
+            '<tr>' +
+                '<td>' + item.event_id + '</td>' +
+                '<td>' + item.geometry + '</td>' +
+                '<td>' + item.id_geometry +'</td>' +
+            '</tr>'
+            );
+            });
+        },
+        error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+            console.error(xhr.responseText);
+        }
+        });
+        }
+
+        function cargarRover() {
+        
+            // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+            $.ajax({
+            url: 'cargarRoverTables.php', // Ruta al script PHP con el parámetro rover_id
+            type: 'GET', // Método de solicitud
+            dataType: 'json', // Tipo de datos esperados
+            success: function(data) { // Función a ejecutar si la solicitud es exitosa
+                console.log(data);
+                // Limpiar el contenido de la tabla
+                $('#dynamicTableBody6').empty();
+                // Iterar sobre los datos recibidos y actualizar la tabla
+                $.each(data, function(index, item) {
+                // Agregar fila a la tabla
+                $('#dynamicTableBody6').append(
+                '<tr>' +
+                    '<td>' + item.name + '</td>' +
+                    '<td>' + item.status + '</td>' +
+                    '<td>' + item.launch_date + '</td>' +
+                    '<td>' + item.landing_date + '</td>' +
+                    '<td>' + item.max_sol + '</td>' +
+                    '<td>' + item.max_date + '</td>' +
+                    '<td>' + item.total_photos +'</td>' +
+                '</tr>'
+                );
+                });
+            },
+            error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+                console.error(xhr.responseText);
+            }
+            });
+        }
+
+        function cargarSource() {
+        
+        // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+        $.ajax({
+        url: 'cargarSourceTables.php', // Ruta al script PHP con el parámetro rover_id
+        type: 'GET', // Método de solicitud
+        dataType: 'json', // Tipo de datos esperados
+        success: function(data) { // Función a ejecutar si la solicitud es exitosa
+            console.log(data);
+            // Limpiar el contenido de la tabla
+            $('#dynamicTableBody7').empty();
+            // Iterar sobre los datos recibidos y actualizar la tabla
+            $.each(data, function(index, item) {
+            // Agregar fila a la tabla
+            $('#dynamicTableBody7').append(
+            '<tr>' +
+                '<td>' + item.id_source + '</td>' +
+                '<td>' + item.title + '</td>' +
+                '<td>' + item.source + '</td>' +
+                '<td>' + item.link +'</td>' +
+            '</tr>'
+            );
+            });
+        },
+        error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+            console.error(xhr.responseText);
+        }
+        });
+    }
+
+    function cargarSourceLinks() {
+        
+        // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+        $.ajax({
+        url: 'cargarSourceLinksTables.php', // Ruta al script PHP con el parámetro rover_id
+        type: 'GET', // Método de solicitud
+        dataType: 'json', // Tipo de datos esperados
+        success: function(data) { // Función a ejecutar si la solicitud es exitosa
+            console.log(data);
+            // Limpiar el contenido de la tabla
+            $('#dynamicTableBody8').empty();
+            // Iterar sobre los datos recibidos y actualizar la tabla
+            $.each(data, function(index, item) {
+            // Agregar fila a la tabla
+            $('#dynamicTableBody8').append(
+            '<tr>' +
+                '<td>' + item.link + '</td>' +
+                '<td>' + item.id_source + '</td>' +
+                '<td>' + item.id_event +'</td>' +
+                '<td>' + item.id +'</td>' +
+            '</tr>'
+            );
+            });
+        },
+        error: function(xhr, status, error) { // Función a ejecutar si hay un error en la solicitud
+            console.error(xhr.responseText);
+        }
+        });
+    }
+
+
+    </script>
+    <script>
+        // Cuando se hace clic en el botón para cambiar la contraseña, se muestra el modal
+        $('.change-password-btn').on('click', function () {
+          $('#changePasswordModal').modal('show');
+        });
+    
+        // Event listener para el envío del formulario de cambio de contraseña
+        $('#changePasswordForm').on('submit', function (event) {
+          event.preventDefault(); // Evita el envío del formulario por defecto
+    
+          // Obtener los datos del formulario
+          var formData = $(this).serialize();
+    
+          // Enviar los datos del formulario mediante AJAX
+          $.ajax({
+            type: 'POST',
+            url: $(this).attr('action'),
+            data: formData,
+            success: function (response) {
+              // Manejar la respuesta del servidor
+              alert(response); // Mostrar mensaje de éxito o error
+              $('#changePasswordModal').modal('hide'); // Ocultar el modal
+            },
+            error: function () {
+              // Manejar errores de la solicitud AJAX
+              alert('Error al enviar la solicitud.');
+            }
+          });
+        });
+   
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f7ff; /* Azul claro */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .container {
+            background-color: #df99f9; /* Azul */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .container h2 {
+            color: #fff; /* Blanco */
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #fff; /* Blanco */
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            box-sizing: border-box;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #b677e0; /* Azul claro */
+        }
+        
+        .btn {
+            background-color: #dfbaff; /* Azul claro */
+            color: #fff; /* Blanco */
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+        
+        .btn:hover {
+            background-color: #5cb85c; /* Verde */
+        }
+
+        .error {
+            color: red;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Inicio de Sesión</h2>
+        <div id="error_message" class="error" style="display:none;"></div>
+        <form action="../loginConMod/login.php" method="post">
+            <div class="form-group">
+                <label for="email">Correo electrónico:</label>
+                <input class="transfot_form" placeholder="gmail" type="text" name="gmail" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Contraseña:</label>
+                <input class="transfot_form" placeholder="contraseña" type="password" id="password" name="contraseina" required>
+            </div>
+
+            <label for="es_administrador">¿Eres administrador?</label><br><br>
+            <input type="checkbox" id="es_administrador" name="es_administrador">
+            <div class="col-md-12">
+                <a href="registrar.html" class="link-registrar"><p>Registrar</p></a>
+            </div>
+            <button type="submit" value="Iniciar sesión" class="btn">Iniciar sesión</button>
+
+
+        </form>
+    </div>
+
+
+</body>
+</html>

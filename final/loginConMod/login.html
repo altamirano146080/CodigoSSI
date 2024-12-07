@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión</title>
+</head>
+<body>
+    <h2>Iniciar Sesión</h2>
+    <form action="login.php" method="post">
+        <label for="email">Correo electrónico:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="contraseña">Contraseña:</label><br>
+        <input type="password" id="contraseña" name="contraseña" required><br><br>
+        
+        <input type="checkbox" id="es_administrador" name="es_administrador">
+        <label for="es_administrador">¿Eres administrador?</label><br><br>
+        
+        <input type="submit" value="Iniciar sesión">
+    </form>
+</body>
+</html>

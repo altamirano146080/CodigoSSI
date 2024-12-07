@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <meta charset="utf-8">
+    <title>DASHMIN - Bootstrap Admin Template</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="" name="keywords">
+    <meta content="" name="description">
+
+    <!-- Favicon -->
+    <link href="img/favicon.ico" rel="icon">
+
+    <!-- Google Web Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Icon Font Stylesheet -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    <!-- Libraries Stylesheet -->
+    <link href="lib/owlcarousel/assets/owl.carousel.min.css" rel="stylesheet">
+    <link href="lib/tempusdominus/css/tempusdominus-bootstrap-4.min.css" rel="stylesheet" />
+
+    <!-- Customized Bootstrap Stylesheet -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Template Stylesheet -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container-xxl position-relative bg-white d-flex p-0">
+        <!-- Spinner Start -->
+        <div id="spinner"
+            class="show bg-white position-fixed translate-middle w-100 vh-100 top-50 start-50 d-flex align-items-center justify-content-center">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+        <!-- Spinner End -->
+
+
+        <!-- Sidebar Start -->
+        <div class="sidebar pe-4 pb-3">
+            <nav class="navbar bg-light navbar-light">
+                <a href="menu.html" class="navbar-brand mx-4 mb-3">
+                    <h3 class="text-primary"><i class="fa fa-hashtag me-2"></i>BACK OFFICE</h3>
+                </a>
+                <div class="d-flex align-items-center ms-4 mb-4">
+                    <div class="position-relative">
+                        <img class="rounded-circle" src="img/logo.png" alt="" style="width: 40px; height: 40px;">
+                        <div
+                            class="bg-success rounded-circle border border-2 border-white position-absolute end-0 bottom-0 p-1">
+                        </div>
+                    </div>
+                    <div class="ms-3">
+                        <h6 id="user_name" class="mb-0">Nombre admin</h6>
+                        <span>Admin</span>
+                    </div>
+                </div>
+                <div class="navbar-nav w-100">
+                    <a href="menu.html" class="nav-item nav-link active"><i class="fa fa-laptop me-2"></i>Listado
+                        Usuarios</a>
+                    <!--
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Datos de la API</a>
+                        <div class="dropdown-menu bg-transparent border-0">
+                            <a href="button.html" class="dropdown-item">Borrar información</a>
+                            <a href="typography.html" class="dropdown-item">Rellenar información</a>
+                        </div>
+                    </div>
+                    -->
+                    <a href="datosAPI.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Datos de la
+                        API</a>
+                    <a href="perfilAdmin.html" class="nav-item nav-link"><i class="far fa-file-alt me-2"></i>Mi
+                        perfil</a>
+                </div>
+            </nav>
+
+        </div>
+        <!-- Sidebar End -->
+
+
+        <!-- Content Start -->
+        <div class="content">
+            <!-- Navbar Start -->
+            <nav class="navbar navbar-expand bg-light navbar-light sticky-top px-4 py-0">
+                <a href="index.html" class="navbar-brand d-flex d-lg-none me-4">
+                    <h2 class="text-primary mb-0"><i class="fa fa-hashtag"></i></h2>
+                </a>
+                <a href="#" class="sidebar-toggler flex-shrink-0">
+                    <i class="fa fa-bars"></i>
+                </a>
+
+                <form class="d-none d-md-flex ms-4">
+                    <!-- Agrega un id al campo de búsqueda -->
+                    <input id="busquedaUsuario" class="form-control border-0" type="search" placeholder="Buscar usuario"
+                        oninput="buscarUsuario()">
+                </form>
+                <!--<form class="d-none d-md-flex ms-4">
+                    <input class="form-control border-0" type="search" placeholder="Buscar usuario">
+                </form> -->
+                <div class="navbar-nav align-items-center ms-auto">
+
+                    <div class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown">
+                            <img class="rounded-circle me-lg-2" src="img/logo.png" alt=""
+                                style="width: 40px; height: 40px;">
+                            <span id="name_user" class="d-none d-lg-inline-flex">Nombre admin</span>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end bg-light border-0 rounded-0 rounded-bottom m-0">
+
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="changePasswordModalLabel"></h5>
+                                <a href="perfilAdmin.html" class="dropdown-item">Cambiar mi contraseña
+
+                                    <span aria-hidden="true">&times;</span>
+                                </a>
+                            </div>
+                            <div class="modal-body">
+                                <!-- Formulario para cambiar la contraseña -->
+                                <!-- Formulario para cambiar la contraseña -->
+                                <form id="changePasswordForm" action="../loginConMod/cambiarcontraseña.php"
+                                    method="post">
+                                    <div class="form-group">
+                                        <label for="currentPassword">Contraseña actual</label>
+                                        <input type="password" class="form-control" id="currentPassword"
+                                            name="currentPassword" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="newPassword">Nueva Contraseña</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword"
+                                            required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="confirmNewPassword">Confirmar Nueva Contraseña</label>
+                                        <input type="password" class="form-control" id="confirmNewPassword"
+                                            name="confirmNewPassword" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                                </form>
+                            </div>
+                            <a href="../loginConMod/logout.php" class="dropdown-item">Log Out</a>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+            <!-- Navbar End -->
+
+
+            <!-- Recent Sales Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light text-center rounded p-4">
+                    <div class="d-flex align-items-center justify-content-between mb-4">
+                        <h6 class="mb-0">Usuarios registrados</h6>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="table text-start align-middle table-bordered table-hover mb-0">
+                            <thead>
+                                <tr class="text-dark">
+                                    <th scope="col">Eliminar usuario</th>
+                                    <th scope="col">id</th>
+                                    <th scope="col">nombre</th>
+                                    <th scope="col">gmail</th>
+                                    <th scope="col">contraseña</th>
+                                    <th scope="col">Modificar contraseña</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dynamicTableBody">
+                                <!--<tr>
+                                    <td><a class="btn btn-sm btn-primary" href="">Eliminar</a></td>
+                                    <td>1</td>
+                                    <td>cuy altamirano</td>
+                                    <td>cuy@gmail.com</td>
+                                    <td>64acc363a14ea0104bfa2cefe4d5ffdd</td>
+                                    <td><a class="btn btn-sm btn-primary" href="">Modificar</a></td>
+                                </tr> -->
+
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- Recent Sales End -->
+
+
+            <!-- Footer Start -->
+            <div class="container-fluid pt-4 px-4">
+                <div class="bg-light rounded-top p-4">
+                    <div class="row">
+                        <div class="col-12 col-sm-6 text-center text-sm-start">
+                            &copy; <a href="#">Your Site Name</a>, All Right Reserved.
+                        </div>
+                        <div class="col-12 col-sm-6 text-center text-sm-end">
+                            <!--/*** This template is free as long as you keep the footer author’s credit link/attribution link/backlink. If you'd like to use the template without the footer author’s credit link/attribution link/backlink, you can purchase the Credit Removal License from "https://htmlcodex.com/credit-removal". Thank you for your support. ***/-->
+                            Designed By <a href="https://htmlcodex.com">HTML Codex</a>
+                            </br>
+                            Distributed By <a class="border-bottom" href="https://themewagon.com"
+                                target="_blank">ThemeWagon</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Footer End -->
+        </div>
+        <!-- Content End -->
+        <!-- Modal para el formulario de cambio de contraseña -->
+
+        <div class="modal fade" id="cambiarContraseñaModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Modificar Contraseña</h5>
+                        <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Formulario de cambio de contraseña -->
+                        <form id="cambiarContraseñaForm" method="POST">
+                            <div class="mb-3">
+                                <label for="newPassword2" class="form-label">Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="newPassword2" name="newPassword2"
+                                    required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword2" class="form-label">Confirmar Nueva Contraseña</label>
+                                <input type="password" class="form-control" id="confirmNewPassword2"
+                                    name="confirmNewPassword2" required>
+                            </div>
+                            <input type="hidden" id="usuarioId" name="usuarioId">
+
+                            <button type="button" class="btn btn-primary" id="btnCambiarContraseña">OK
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- Agrega este modal para mostrar el formulario de confirmación de eliminación -->
+    <div class="modal fade" id="confirmarEliminacionModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que quieres eliminar este usuario?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-danger" id="confirmarEliminacion">Sí</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Back to Top -->
+    <a href="#" class="btn btn-lg btn-primary btn-lg-square back-to-top"><i class="bi bi-arrow-up"></i></a>
+    </div>
+
+
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="lib/chart/chart.min.js"></script>
+    <script src="lib/easing/easing.min.js"></script>
+    <script src="lib/waypoints/waypoints.min.js"></script>
+    <script src="lib/owlcarousel/owl.carousel.min.js"></script>
+    <script src="lib/tempusdominus/js/moment.min.js"></script>
+    <script src="lib/tempusdominus/js/moment-timezone.min.js"></script>
+    <script src="lib/tempusdominus/js/tempusdominus-bootstrap-4.min.js"></script>
+
+    <!-- Template Javascript -->
+    <script src="js/main.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                url: '../ulio-html/obtener_usuario.php', // Ruta del archivo PHP que devuelve los datos del usuario
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    // Actualizar la información del usuario en el frontend
+                    $('#user_avatar').attr('src', data.avatar); // Actualizar la imagen de perfil
+                    $('#user_name').text(data.nombre); // Actualizar el nombre del usuario
+                    $('#name_user').text(data.nombre); // Actualizar el nombre del usuario
+
+
+                },
+                error: function () {
+                    // Manejar errores de la solicitud AJAX
+                    alert('Error al obtener los datos del usuario.');
+                }
+            });
+            cargarUsuarios();
+        });
+
+        function cargarUsuarios() {
+            $.ajax({
+                url: 'mostrarUsuarios.php',
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    $('#dynamicTableBody').empty();
+                    $.each(data, function (index, item) {
+                        var row = '<tr id="usuario_' + item.usuario_id + '">' +
+                            '<td><a class="btn btn-sm btn-primary btnEliminarUsuario" href="#">Eliminar</a></td>' +
+                            '<td>' + item.usuario_id + '</td>' +
+                            '<td>' + item.usuario_nombre + '</td>' +
+                            '<td>' + item.usuario_gmail + '</td>' +
+                            '<td>' + item.usuario_contrasena + '</td>' +
+                            '<td><button class="btn btn-sm btn-primary btnModificarContraseña">Modificar</button></td>' +
+                            '</tr>';
+                        $('#dynamicTableBody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        $(document).on("click", ".btnModificarContraseña", function () {
+            var usuarioId = $(this).closest("tr").find("td:eq(1)").text();
+            $("#usuarioId").val(usuarioId);
+            $("#cambiarContraseñaModal").modal("show");
+        });
+
+        $("#btnCambiarContraseña").click(function () {
+            var newPassword = $("#newPassword2").val();
+            var confirmNewPassword = $("#confirmNewPassword2").val();
+            var usuarioId = $("#usuarioId").val();
+
+            if (newPassword !== confirmNewPassword) {
+                alert("Las contraseñas no coinciden.");
+                return;
+            }
+
+            $.ajax({
+                url: "cambiocontraseña2.php",
+                type: "POST",
+                data: {
+                    usuarioId: usuarioId,
+                    newPassword: newPassword
+                },
+                success: function (response) {
+                    if (response.startsWith("Contraseña cambiada correctamente.")) {
+                        var newPassArray = response.split(":");
+                        var newPass = newPassArray[1].trim();
+
+                        var fila = $("#usuario_" + usuarioId);
+                        fila.find("td:eq(4)").text(newPass);
+
+                        $("#cambiarContraseñaModal").modal("hide");
+                    } else {
+                        alert(response);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                    alert("Error al cambiar la contraseña.");
+                }
+            });
+        });
+
+
+
+
+        function buscarUsuario() {
+            // Hacer la solicitud AJAX al script PHP con el rover_id como parámetro
+            var busqueda = $('#busquedaUsuario').val();
+            $.ajax({
+                url: 'buscarUsuario.php',
+                type: 'GET',
+                dataType: 'json',
+                data: { busqueda_gmail: busqueda },
+                success: function (data) {
+                    console.log(data);
+                    $('#dynamicTableBody').empty();
+                    $.each(data, function (index, item) {
+                        var row = '<tr id="usuario_' + item.usuario_id + '">' +
+                            '<td><a class="btn btn-sm btn-primary btnEliminarUsuario" href="#">Eliminar</a></td>' +
+                            '<td>' + item.usuario_id + '</td>' +
+                            '<td>' + item.usuario_nombre + '</td>' +
+                            '<td>' + item.usuario_gmail + '</td>' +
+                            '<td>' + item.usuario_contrasena + '</td>' +
+                            '<td><button class="btn btn-sm btn-primary btnModificarContraseña">Modificar</button></td>' +
+                            '</tr>';
+                        $('#dynamicTableBody').append(row);
+                    });
+                },
+                error: function (xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+       
+        $(document).on("click", ".btnEliminarUsuario", function () {
+            var fila = $(this).closest("tr");
+            var usuarioId = fila.find("td:eq(1)").text();
+            $("#confirmarEliminacionModal").modal("show");
+            $("#confirmarEliminacionModal .btn-secondary").click(function () {
+                $("#confirmarEliminacionModal").modal("hide"); // Cierra el modal de confirmación
+            });
+            $("#confirmarEliminacionModal .btn-close").click(function () {
+                $("#confirmarEliminacionModal").modal("hide"); // Cierra el modal de confirmación de eliminación
+            });
+            $("#confirmarEliminacion").click(function () {
+                $.ajax({
+                    url: "eliminarUsuario.php",
+                    type: "POST",
+                    data: {
+                        usuarioId: usuarioId
+                    },
+                    success: function (response) {
+                        if (response.startsWith("Usuario eliminado correctamente.")) {
+                            fila.remove();
+                        }
+                        alert(response);
+                    },
+                    error: function (xhr, status, error) {
+                        console.error(xhr.responseText);
+                        alert("Error al eliminar el usuario.");
+                    }
+                });
+
+                $("#confirmarEliminacionModal").modal("hide");
+            });
+        });
+
+    </script>
+
+    <script>
+        // Cuando se hace clic en el botón para cambiar la contraseña, se muestra el modal
+        $('.change-password-btn').on('click', function () {
+            $('#changePasswordModal').modal('show');
+        });
+
+        // Event listener para el envío del formulario de cambio de contraseña
+        $('#changePasswordForm').on('submit', function (event) {
+            event.preventDefault(); // Evita el envío del formulario por defecto
+
+            // Obtener los datos del formulario
+            var formData = $(this).serialize();
+
+            // Enviar los datos del formulario mediante AJAX
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: formData,
+                success: function (response) {
+                    // Manejar la respuesta del servidor
+                    alert(response); // Mostrar mensaje de éxito o error
+                    $('#changePasswordModal').modal('hide'); // Ocultar el modal
+                },
+                error: function () {
+                    // Manejar errores de la solicitud AJAX
+                    alert('Error al enviar la solicitud.');
+                }
+            });
+        });
+
+    </script>
+
+
+
+    <!-- Script para manejar el formulario y la actualización de contraseña -->
+
+    <!-- Script para manejar el formulario y la actualización de contraseña -->
+
+</body>
+
+</html>

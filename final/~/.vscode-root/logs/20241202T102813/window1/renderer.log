@@ -1,0 +1,32 @@
+2024-12-02 10:28:16.193 [info] Started local extension host with pid 4494.
+2024-12-02 10:28:16.498 [info] Started initializing default profile extensions in extensions installation folder. file:///root/.vscode/extensions
+2024-12-02 10:28:19.681 [info] Completed initializing default profile extensions in extensions installation folder. file:///root/.vscode/extensions
+2024-12-02 10:28:48.849 [info] Extension host (LocalProcess pid: 4494) is unresponsive.
+2024-12-02 10:28:48.932 [info] Extension host (LocalProcess pid: 4494) is responsive.
+2024-12-02 10:28:50.889 [info] Settings Sync: Updating due to initialize
+2024-12-02 10:28:50.891 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:28:50.891 [info] Settings Sync: Authentication providers updated ["github","microsoft"]
+2024-12-02 10:28:53.338 [info] [perf] Render performance baseline is 219ms
+2024-12-02 10:33:51.328 [info] Started local extension host with pid 4735.
+2024-12-02 10:33:59.993 [info] Settings Sync: Updating due to initialize
+2024-12-02 10:34:00.087 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:00.090 [info] Settings Sync: Authentication providers updated []
+2024-12-02 10:34:09.332 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:09.347 [info] Settings Sync: Authentication providers updated ["github"]
+2024-12-02 10:34:09.348 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:09.348 [info] Settings Sync: Authentication providers updated ["github"]
+2024-12-02 10:34:09.349 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:09.349 [info] Settings Sync: Authentication providers updated ["github","microsoft"]
+2024-12-02 10:34:09.349 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:09.349 [info] Settings Sync: Authentication providers updated ["github","microsoft"]
+2024-12-02 10:34:09.447 [info] Settings Sync: Updating due to declared authentication providers changed
+2024-12-02 10:34:09.448 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:09.448 [info] Settings Sync: Authentication providers updated ["github","microsoft"]
+2024-12-02 10:34:09.448 [info] Settings Sync: Updating due to declared authentication providers changed
+2024-12-02 10:34:09.451 [info] Settings Sync: Updating authentication providers. Authentication Providers from store: [{"id":"github","scopes":["user:email"]},{"id":"microsoft","scopes":["openid","profile","email","offline_access"]}]
+2024-12-02 10:34:09.451 [info] Settings Sync: Authentication providers updated ["github","microsoft"]
+2024-12-02 10:34:39.873 [info] Extension host (LocalProcess pid: 4735) is unresponsive.
+2024-12-02 10:34:41.103 [info] Extension host (LocalProcess pid: 4735) is responsive.
+2024-12-02 10:34:54.249 [info] Extension host (LocalProcess pid: 4735) is unresponsive.
+2024-12-02 10:34:58.515 [info] Extension host (LocalProcess pid: 4735) is responsive.
+2024-12-02 10:35:24.837 [info] [perf] Render performance baseline is 96ms

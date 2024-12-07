@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <!-- Basic -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script>
+    var categoria = 12;  // Establecer una categoría por defecto
+    var paginaActual = 1;
+    var totalPaginas = 1;
+
+    $(document).ready(function () {
+      // Llamar a la función para obtener las categorías al cargar la página
+      obtenerCategorias();
+
+      $("#buscar").on("change", function () {
+        paginaActual = 1;
+        cargarEventos(categoria);
+      });
+      $("#numerolineas").on("change", function () {
+        paginaActual = 1;
+        cargarEventos(categoria);
+      });
+      $("#anterior").on("click", function () {
+        if (paginaActual > 1) {
+          paginaActual--;
+          cargarEventos(categoria);
+        }
+      });
+      $("#siguiente").on("click", function () {
+        if (paginaActual < totalPaginas) {
+          paginaActual++;
+          cargarEventos(categoria);
+        }
+      });
+
+      // Cargar eventos inicialmente
+      cargarEventos(categoria);
+    });
+
+    function obtenerCategorias() {
+      $.ajax({
+        url: 'obtenerCategorias.php', // Ruta al archivo PHP que devuelve las categorías
+        type: 'GET',
+        dataType: 'json',
+        success: function (data) {
+          //alert('Categorías recibidas con éxito: ' + JSON.stringify(data));
+          // Limpiar el desplegable antes de agregar las nuevas opciones
+          $('#buscar').empty();
+          // Iterar sobre los datos recibidos y agregar opciones al desplegable
+          $.each(data, function (index, categoria) {
+              $('#buscar').append('<option value="' + categoria.id_categories + '">' + categoria.title + '</option>');
+          });
+        },
+        error: function (xhr, status, error) {
+          console.error('Error obteniendo categorías:', error);
+        }
+      });
+    }
+
+    function cargarEventos(categorieId) {
+      var buscar = $("#buscar").val();
+      var numerolineas = $("#numerolineas").val();
+      if (buscar == null) {
+        buscar = categorieId;
+      }
+      $.ajax({
+
+        url: `buscar_eventos.php?categorieId=${buscar}&numerolineas=${numerolineas}&pagina=${paginaActual}`,
+        success: function (response) {
+          // Convertir la cadena JSON en un objeto JavaScript
+          var responseData = JSON.parse(response);
+          //alert('Datos recibidos de index.php: ' + JSON.stringify(responseData));
+          if (responseData.data && responseData.data.length > 0) {
+            var tabla = "<table border='1'><tr><th>Evento ID</th><th>Título</th><th>Descripción</th><th>Enlace</th><th>Categorías</th><th>Mapa con geometries</th></tr>";
+            responseData.data.forEach(evento => {
+              tabla += `<tr><td>${evento.eventoId}</td><td>${evento.title}</td><td>${evento.description}</td><td><a href="${evento.link}">${evento.link}</a></td><td>${evento.categories}</td><td><a href="mapaGeometrias.php?EONET_id=${evento.eventoId}&titulo=${evento.title}">mapa</a></td></tr>`;
+            });
+            tabla += "</table>";
+            $("#listadoEventos").html(tabla);
+            totalPaginas = responseData.totalPages;
+            $("#pagina").val(paginaActual);
+            $("#totalPaginas").text(totalPaginas);
+          } else {
+            $("#listadoEventos").html("No se encontraron resultados.");
+          }
+        },
+
+        error: function () {
+          alert("Se ha producido un error");
+        }
+      });
+    }
+
+  </script>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <!-- Mobile Metas -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  <!-- Site Metas -->
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="author" content="" />
+
+  <title>
+    nasa api
+  </title>
+
+  <!-- slider stylesheet -->
+  <link rel="stylesheet" type="text/css"
+    href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+
+  <!-- fonts style -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:400,700|Raleway:400,700&display=swap" rel="stylesheet" />
+
+  <!-- bootstrap core css -->
+  <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
+
+  <!-- Custom styles for this template -->
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+</head>
+
+<body class="sub_page">
+  <div class="hero_area">
+    <!-- header section strats -->
+    <header class="header_section">
+      <div class="container-fluid">
+        <nav class="navbar navbar-expand-lg custom_nav-container ">
+          <a class="navbar-brand" href="index.html">
+            <span>
+              nasa api
+            </span>
+          </a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="d-flex ml-auto flex-column flex-lg-row align-items-center">
+              <ul class="navbar-nav  ">
+                <li class="nav-item ">
+                  <a class="nav-link" href="index.html">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item active">
+                  <a class="nav-link" href="about.html">
+                    Listados
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="service.html">
+                    Sobre nosotros
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="template.html">
+                    Gráficos
+                  </a>
+                </li>
+              </ul>
+              <div class="user_option">
+                <a href="perfil.php">
+                  <img src="images/user.png" alt="">
+                </a>
+              </div>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </header>
+    <!-- end header section -->
+  </div>
+  <!-- end hero area -->
+
+  <!-- do section -->
+
+  <section class="do_section layout_padding2-top layout_padding-bottom">
+    <div class="container">
+      <div class="heading_container">
+        <h2>
+          Eventos
+        </h2>
+        <p>
+          Filtra por tipo de evento
+        </p>
+      </div>
+    </div>
+
+
+            <div class="container">
+              <label for="buscar">Selecciona la categoría:</label>
+              <select name="buscar" id="buscar"></select>
+
+              <label for="numerolineas">Líneas por página:</label>
+              <select name="numerolineas" id="numerolineas">
+                <option value="10">10</option>
+                <option value="20">20</option>
+                <option value="30">30</option>
+              </select>
+
+              <button onclick="generarPDF()">Generar PDF</button>
+
+              <label for="pagina">Página:</label>
+              <input type="button" value="<" name="anterior" id="anterior">
+              <input type="text" name="pagina" id="pagina" value="1" readonly style="width: 30px; padding: 5px;">
+              <span style="margin-right: 5px;">de</span>
+              <span id="totalPaginas">1</span>
+              <input type="button" value=">" name="siguiente" id="siguiente">
+            </div>
+            <div class="container do_container mb-0">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="detail-box">
+                    <!-- aqui iria el listado -->
+                    <div id="listadoEventos"></div>
+                    <!-- aqui acabaría el listado -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- end do section -->
+
+
+
+  <!-- footer section -->
+  <section class=" footer_section ">
+    <div class="container">
+      <h5>
+        Ultima actualización
+      </h5>
+      <div class="info_contact layout_padding2">
+        <a href="#" class="link-box">
+          <div class="img-box">
+            <img src="images/calendar.png" alt="">
+          </div>
+          <div class="detail-box">
+            <h6>
+              Fecha: <span id="lastUpdateDate"></span>
+            </h6>
+          </div>
+        </a>
+        <a href="#" class="link-box">
+          <div class="img-box">
+            <img src="images/clock.png" alt="">
+          </div>
+          <div class="detail-box">
+            <h6>
+              Hora: <span id="lastUpdateTime"></span>
+            </h6>
+          </div>
+        </a>
+      </div>
+      <p>
+        &copy; <span id="displayYear"></span> All Rights Reserved By
+        <a href="https://html.design/">Free Html Templates</a>
+      </p>
+    </div>
+  </section>
+  <!-- footer section -->
+  <!-- Load jsPDF first -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+  <!-- Load the AutoTable plugin immediately after jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.23/jspdf.plugin.autotable.min.js"></script>
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
+  <script type="text/javascript" src="js/bootstrap.js"></script>
+  <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+  <script type="text/javascript" src="js/custom.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function () {
+      // Llamar a la función para obtener categorías al cargar la página
+      obtenerCategorias();
+    });
+
+    // JavaScript code to generate PDF
+    function generarPDF() {
+      // Make an AJAX call to check authentication status
+      $.ajax({
+        url: 'check_authentication.php',
+        type: 'GET',
+        dataType: 'json',
+        success: function (response) {
+          if (response.authenticated) {
+            // Proceed with generating PDF
+            generatePDFContent();
+          } else {
+            // Redirect user to login page
+            window.location.href = 'iniciarSesion.html';
+          }
+        },
+        error: function () {
+          console.error('Error checking authentication status.');
+        }
+      });
+    }
+
+    function generatePDFContent() {
+
+
+      const { jsPDF } = window.jspdf; // Asegura que jsPDF se acceda correctamente en el contexto UMD
+      const doc = new jsPDF();
+
+      // Comprueba si autoTable se ha cargado correctamente
+      if (typeof doc.autoTable !== "function") {
+        console.error("autoTable no se ha cargado correctamente.");
+        return; // Detiene la función si autoTable no está disponible
+      }
+
+      // Carga la imagen del logotipo desde la URL
+      var img = new Image();
+      img.src = 'images/logo.png';  // Cambia esta URL por la URL real de tu logotipo
+      img.onload = function () {
+        // Dibuja la imagen en el PDF
+        doc.addImage(img, 'PNG', 10, 6, 40, 40); // Ajusta las dimensiones y la posición según sea necesario
+
+        // Agrega el título después del logotipo
+        doc.text('Listado de eventos', 70, 25); // Ajusta la posición según sea necesario
+
+        var table = document.getElementById('listadoEventos').querySelector('table');
+        var rows = table.getElementsByTagName('tr');
+        var data = [];
+
+        for (var i = 0; i < rows.length; i++) {
+          var tableRow = rows[i];
+          var rowData = [];
+          var cells = tableRow.getElementsByTagName('td');
+
+          for (var j = 0; j < cells.length; j++) {
+            var cellData = cells[j].textContent.trim();
+            if (j == 2) {
+              if (cellData == '') {
+                cellData = "Sin Descripción"
+              }
+
+            }
+            // Si es la columna del enlace
+            if (j == 3) {
+              // Obtener el enlace dentro de la celda
+              var linkElement = cells[j].querySelector('a');
+              // Verificar si se encontró un enlace
+              if (linkElement) {
+                // Obtener el valor del atributo href del enlace
+                cellData = linkElement.href;
+              } else {
+                // Si no se encontró ningún enlace, establecer el valor como vacío
+                cellData = '';
+              }
+            }
+            rowData.push(cellData);
+          }
+
+          data.push(rowData);
+        }
+        // Define el contenido del pie de página
+        var footer = function (data) {
+          doc.setTextColor(150);
+          doc.setFontSize(10);
+          doc.text('Página ' + data.pageNumber, data.settings.margin.left, doc.internal.pageSize.height - 10);
+        };
+        // Usa autoTable para manejar la creación de la tabla en el PDF
+        doc.autoTable({
+          head: [['EventoID', 'Titulo', 'Descripcion', 'URL', 'Categorias']],
+          body: data,
+          startY: 45,  // Comienza debajo de la imagen y el título
+          theme: 'striped',
+          styles: {
+            cellWidth: 'wrap',
+            font: 'helvetica',
+            fontSize: 10,
+            halign: 'left',
+            overflow: 'linebreak',
+          },
+          columnStyles: {
+            0: { cellWidth: 'auto' },
+            1: { cellWidth: 'auto' },
+            2: { cellWidth: 'auto' },
+            3: { cellWidth: 'auto' },
+            4: { cellWidth: 'auto' },
+          },
+          margin: { bottom: 50 }, // Margen inferior para el pie de página
+          didDrawPage: function (data) {
+            // Add footer on all pages
+            footer(data);
+          }
+
+        });
+
+        // Agrega el pie de página
+        const totalPagesExp = '{total_pages_count_string}';
+        doc.setPage(doc.internal.pages.length);
+        doc.setFontSize(10);
+
+        // Guarda el PDF
+        doc.save('listado_eventos.pdf');
+      };
+    }
+
+  </script>
+
+  <script>
+    $(document).ready(function(){
+        // Obtener la última fecha de actualización
+        $.ajax({
+            url: 'obtener_ultima_actualizacion.php',
+            type: 'GET',
+            success: function(response) {
+                var lastUpdate = new Date(response);
+                // Formatear la fecha
+                var lastUpdateDate = lastUpdate.toLocaleDateString();
+                var lastUpdateTime = lastUpdate.toLocaleTimeString();
+                // Mostrar la última fecha de actualización en los elementos HTML correspondientes
+                $('#lastUpdateDate').text(lastUpdateDate);
+                $('#lastUpdateTime').text(lastUpdateTime);
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText);
+            }
+        });
+    });
+  </script>
+</body>
+
+</html>
