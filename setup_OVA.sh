@@ -12,7 +12,7 @@ DB_NAME="ssi"
 WEB_DIR="/var/www/html/web"
 ZIP_FILE="/home/user1/final.zip"
 SERVICE_NAME="script.service"
-SCRIPT_FILE="script.sh"
+SCRIPT_FLAGS_FILE="putFlags.sh"
 
 ADMIN_NAME="admin"
 ADMIN_EMAIL="admin@example.com"
@@ -219,7 +219,7 @@ fi
 
 # Configuración de script.service
 echo -e "${GREEN}Configurando script.service...${NC}"
-SCRIPT_PATH="/home/user1/$SCRIPT_FILE"
+SCRIPT_PATH="/home/user1/$SCRIPT_FLAGS_FILE"
 SERVICE_PATH="/home/user1/$SERVICE_NAME"
 TARGET_SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
 

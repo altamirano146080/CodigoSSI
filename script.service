@@ -3,7 +3,7 @@ Description=Mi Script de Inicio
 After=network.target
 
 [Service]
-ExecStart=/bin/bash /home/user1/script.sh
+ExecStart=/bin/bash /home/user1/putFlags.sh
 WorkingDirectory=/home/user1
 User=root
 Group=root
