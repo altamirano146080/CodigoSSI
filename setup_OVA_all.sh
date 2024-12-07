@@ -8,8 +8,8 @@ NC='\033[0m'
 PHPMYADMIN_PASSWORD="sql"
 ROOT_MYSQL_PASSWORD="sql"
 DB_NAME="ssi"
-WEB_DIR="/var/www/html/pagina"
-ZIP_FILE="/home/final.zip"
+WEB_DIR="/var/www/html/web"
+ZIP_FILE="/home/user1/final.zip"
 SERVICE_NAME="script.service"
 SCRIPT_FILE="script.sh"
 
@@ -68,8 +68,8 @@ fi
 
 # Configuración de script.service
 echo -e "${GREEN}Configurando script.service...${NC}"
-SCRIPT_PATH="$WEB_DIR/ARCHIVOS/$SCRIPT_FILE"
-SERVICE_PATH="$WEB_DIR/ARCHIVOS/$SERVICE_NAME"
+SCRIPT_PATH="/home/user1/$SCRIPT_FILE"
+SERVICE_PATH="/home/user1/$SERVICE_NAME"
 TARGET_SERVICE_PATH="/etc/systemd/system/$SERVICE_NAME"
 
 if [ -f "$SCRIPT_PATH" ]; then
