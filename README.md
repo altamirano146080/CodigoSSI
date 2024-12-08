@@ -26,8 +26,7 @@ Este trabajo consiste en la creación de un sistema web vulnerable basado en PHP
    Se crea un sistema web vulnerable con PHP, donde se permite la ejecución de código malicioso a través de la concatenación de varios fallos de seguridad, como un fallo en el manejo de entradas no sanitizadas o inyecciones de comandos. 
    
 2. **Elevación de Privilegios**:
-   Se han proporcionado dos opciones para la elevación de privilegios:
-   - **Buffer Overflow (BOF)**: Se implementa un binario en C que contiene un fallo de buffer overflow que se puede explotar para ejecutar comandos arbitrarios. Este binario se configura para que el usuario `www-data` pueda ejecutarlo como root.
+   Se ha utilizado para la elevación de privilegios:
    - **gtfobins**: Se proporciona una configuración que explota una vulnerabilidad de una herramienta estándar (por ejemplo, un binario como `python`, `gcc`, etc.) para elevar los privilegios de `www-data` a root.
 
 3. **Generación y almacenamiento de flags**:
@@ -78,19 +77,12 @@ El sistema está configurado para que se ejecute automáticamente en el arranque
 
 #### Paso 3: Elevación de privilegios
 
-1. **Elevación usando Buffer Overflow (BOF)**:
-   Se ha implementado un binario en C con una vulnerabilidad de buffer overflow. Este binario permite a un atacante ejecutar comandos arbitrarios, y el script configura los permisos para que el usuario `www-data` pueda ejecutar este binario como root mediante sudoers:
-   ```bash
-   sudo gcc -x c -E "$LFILE"
-   ```
-   Esta técnica permite que el atacante escale privilegios desde `www-data` (usuario con permisos limitados) a `root` (usuario con privilegios completos).
-
-2. **Elevación usando gtfobins**:
+1. **Elevación usando gtfobins**:
    Alternativamente, se puede usar una herramienta como `gtfobins` para explotar una vulnerabilidad en un binario del sistema que permita a `www-data` ejecutar comandos como root. Esto depende de la configuración del sistema y de los permisos del binario.
 
 #### Paso 4: Captura de las flags
 
-Una vez que se obtiene acceso con privilegios elevados (ya sea por el buffer overflow o por una vulnerabilidad gtfobins), el atacante puede leer las flags desde los archivos `/home/www-data/user.txt` y `/root/root.txt`. Esto se realiza mediante la ejecución de comandos como `cat` o cualquier otro método para acceder a esos archivos.
+Una vez que se obtiene acceso con privilegios elevados (por una vulnerabilidad gtfobins), el atacante puede leer las flags desde los archivos `/home/www-data/user.txt` y `/root/root.txt`. Esto se realiza mediante la ejecución de comandos como `cat` o cualquier otro método para acceder a esos archivos.
 
 - **Flag de usuario**: Se encuentra en `/home/www-data/user.txt`.
 - **Flag de root**: Se encuentra en `/root/root.txt`.
