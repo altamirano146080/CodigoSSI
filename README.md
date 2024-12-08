@@ -1,2 +1,0 @@
-# CodigoSSI
-Trabajo final SSI

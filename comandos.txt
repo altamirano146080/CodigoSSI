@@ -1,5 +1,0 @@
-curl -X POST \
-     -d "email=user@example.com" \
-     -d "contrasena=yourpassword" \
-     -d "es_administrador=on" \
-     http://your-server-url/path-to-login-script.php
