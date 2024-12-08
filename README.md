@@ -10,10 +10,6 @@ chmod +x automatizado......
 ./automatizado.....
 
 
-
-
-
-WRITEUP:
 ### WriteUp para la solución del sistema vulnerable y explotación de RCE
 
 #### Descripción general del sistema
