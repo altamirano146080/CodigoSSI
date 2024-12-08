@@ -29,6 +29,11 @@ sudo systemctl enable apache2
 sudo systemctl start apache2
 echo -e "${GREEN}Apache2 instalado y funcionando.${NC}"
 
+# Instalamos curl
+echo -e "${GREEN}Instalando curl...${NC}"
+sudo apt install -y curl
+echo -e "${GREEN}curl instalado correctamente.${NC}"
+
 # Instalamos MySQL Server (no interactivo)
 echo -e "${GREEN}Instalando MySQL Server...${NC}"
 sudo apt install -y gnupg wget
