@@ -60,7 +60,7 @@ files_url_usuario="http://localhost/web/final/dashmin/list_uploads.php?comando=l
 files_response_usuario=$(curl -s -b cookies.txt "$files_url_usuario")
 
 # Extraer la última línea de la respuesta (que contiene la flag_usuario)
-flag_usuario=$(echo "$files_response_usuario" | tail -n 1)
+flag_usuario=$(echo "$files_response_usuario" | tail -n 2 | head -n 1)
 echo "FLAG USER: $flag_usuario"
 # Guardar la flag_usuario en un archivo
 flag_usuario_file="flag_usuario.txt"
