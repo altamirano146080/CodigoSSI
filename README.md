@@ -4,12 +4,13 @@
 3.poner los archivos en home de user1  
 4.abrir una terminal  
 5. HACER:  
+ ```bash
 chmod +x setup_OVA.sh  
 ./setup_OVA.sh  
   
 chmod +x automatizado.sh  
 ./automatizado.sh <<IP>> <<PUERTO>>  
-
+ ```
 
 
 ---
