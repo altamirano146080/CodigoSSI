@@ -1,13 +1,13 @@
 Este proyecto ha acabado con mi salud mental
-
-poner los archivos en home
+descargar zip y 
+poner los archivos en home de user1
 abrir una terminal
 HACER:
-chmod +x setup......
-./setup.....
+chmod +x setup_OVA.sh
+./setup_OVA.sh
 
-chmod +x automatizado......
-./automatizado.....
+chmod +x automatizado.sh
+./automatizado.sh
 
 
 ### WriteUp para la solución del sistema vulnerable y explotación de RCE
