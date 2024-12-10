@@ -52,8 +52,24 @@ El exploit aprovecha inyecciones SQL, subida de archivos maliciosos y escalació
    ./setup_ova.sh
    ```
 
-2. **`gdb.sh`**:
-   Script malicioso utilizado en la explotación. Este archivo aprovecha `gdb` para leer archivos protegidos.
+2. **`automatizado.sh`**:
+   Este script automatiza el proceso de explotación, realizando todos los pasos necesarios, desde la inyección SQL hasta la extracción de las *flags*. Diseñado para ahorrar tiempo, simplifica el ataque para evitar realizar comandos manuales.
+
+   #### **Acciones Automatizadas**
+   - Realiza la inyección SQL para extraer credenciales.
+   - Se autentica automáticamente como administrador en el sistema.
+   - Sube el archivo malicioso `gdb.sh` al servidor.
+   - Ejecuta comandos en el servidor remoto para explotar la vulnerabilidad RCE.
+   - Escala privilegios con `gdb` y lee las *flags*.
+
+   #### **Instrucciones de Uso**:
+   Ejecutar el script directamente:
+   ```bash
+   chmod +x automatizado.sh
+   ./automatizado.sh
+   ```
+
+   Durante la ejecución, el script muestra las acciones realizadas y los resultados, incluyendo el contenido de las *flags*.
 
 ---
 
