@@ -1,16 +1,16 @@
-Este proyecto ha acabado con mi salud mental
-descargar zip y 
-poner los archivos en home de user1
-abrir una terminal
-HACER:
+
+1.descargar zip
+2.extraerlo
+3.poner los archivos en home de user1
+4.abrir una terminal
+5. HACER:
 chmod +x setup_OVA.sh
 ./setup_OVA.sh
 
 chmod +x automatizado.sh
-./automatizado.sh
+./automatizado.sh <<IP>> <<PUERTO>>
 
 
-Aquí tienes el write-up actualizado con detalles sobre la configuración inicial del entorno y el proceso de explotación:
 
 ---
 
@@ -93,7 +93,7 @@ El script `automatizado.sh` realiza esta extracción utilizando `curl` y formate
 
 ### **Paso 2: Acceso como Administrador**
 Con las credenciales obtenidas, autenticarse en el sistema:
-```bash
+```bash 
 curl -X POST \
      -d "email=admin@gmail.com" \
      -d "contrasena=admin123" \
@@ -148,18 +148,3 @@ Este comando:
 El contenido de ambas *flags* se muestra en la salida.
 
 ---
-
-## **3. Mitigación**
-
-### **Vulnerabilidades Identificadas**
-1. **Inyección SQL**:
-   - El parámetro `rover_id` no sanitiza entradas.
-2. **Subida de Archivos Maliciosos**:
-   - No hay validación de extensiones ni restricciones de tipo MIME.
-3. **Escalación de Privilegios**:
-   - El binario `gdb` tiene permisos inseguros en el archivo `sudoers`.
-
----
-
-## **Conclusión**
-Este escenario ilustra cómo una serie de vulnerabilidades, combinadas, pueden comprometer un sistema web. Desde inyección SQL hasta escalación de privilegios, es fundamental identificar y mitigar estos riesgos para proteger aplicaciones web contra ataques avanzados.
