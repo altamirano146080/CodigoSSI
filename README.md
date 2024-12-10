@@ -161,28 +161,5 @@ El contenido de ambas *flags* se muestra en la salida.
 
 ---
 
-### **Medidas de Seguridad**
-1. **Sanitización de Entradas**:
-   - Usar consultas SQL preparadas.
-   - Validar entradas para evitar comandos maliciosos.
-
-2. **Control de Subidas de Archivos**:
-   - Limitar las extensiones permitidas (`.jpg`, `.png`).
-   - Subir archivos a directorios con permisos `noexec`.
-
-3. **Configuración Segura de Permisos**:
-   - Revisar los binarios con permisos elevados (`gdb`) y eliminar configuraciones inseguras en `sudoers`.
-
-4. **Deshabilitar Funciones Inseguras en PHP**:
-   - Modificar `php.ini` para restringir funciones como `exec`, `shell_exec`:
-     ```
-     disable_functions = exec, system, passthru
-     ```
-
-5. **Principio de Privilegios Mínimos**:
-   - Ejecutar el servidor web con permisos limitados y aislarlo en un entorno de contenedor o jaula (`chroot`).
-
----
-
 ## **Conclusión**
 Este escenario ilustra cómo una serie de vulnerabilidades, combinadas, pueden comprometer un sistema web. Desde inyección SQL hasta escalación de privilegios, es fundamental identificar y mitigar estos riesgos para proteger aplicaciones web contra ataques avanzados.
